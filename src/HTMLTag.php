@@ -2,9 +2,9 @@
 
 /**
  * A class designed to build an HTML tag (or tree of tags) in an OOP way.
- * @author  Garry Ercoli <Garry@GErcoli.com>
- * @package GErcoli\HTMLTags
- * @version 0.1
+ * @author      Garry Ercoli <Garry@GErcoli.com>
+ * @package     GErcoli\HTMLTags
+ * @version     0.1
  * @copyright   Garry Ercoli
  */
 class HTMLTag {
@@ -227,6 +227,19 @@ class HTMLTag {
     }
 
     /**
+     * Creates a formatted key1="value1" key2="value2" string for the tag
+     * @return  string
+     */
+    private function getFormattedAttributes()
+    {
+        foreach($this->attributes as $key => $value)
+        {
+            $string = ((isset($string)) ? $string : "") . sprintf(" %s=\"%s\"",htmlentities($key), htmlentities($value));
+        }
+        return ((isset($string)) ? $string : "");
+    }
+    
+    /**
      * Turns the object (and it's children) into a nice pretty lump of HTML
      * @return string
      */
@@ -250,21 +263,5 @@ class HTMLTag {
             $html .= sprintf("%s</%s>",$innerHTML,$this->type());
         }
         return $html;
-    }
-
-    /**
-     * Creates a formatted key1="value1" key2="value2" string for the tag
-     * @return  string
-     */
-    private function getFormattedAttributes()
-    {
-        //var_dump($this->attributes);
-        foreach($this->attributes as $key => $value)
-        {
-            $string = ((isset($string)) ? $string : "") . sprintf(" %s=\"%s\"",htmlentities($key), htmlentities($value));
-        }
-
-        return ((isset($string)) ? $string : "");
-
     }
 }
