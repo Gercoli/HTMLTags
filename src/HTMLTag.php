@@ -4,7 +4,7 @@
  * A class designed to build an HTML tag (or tree of tags) in an OOP way.
  * @author      Garry Ercoli <Garry@GErcoli.com>
  * @package     GErcoli\HTMLTags
- * @version     0.1
+ * @version     v0.2-alpha
  * @copyright   Garry Ercoli
  */
 class HTMLTag {

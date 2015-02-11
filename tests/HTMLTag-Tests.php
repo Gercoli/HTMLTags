@@ -88,7 +88,7 @@ class HTMLTagTest extends PHPUnit_Framework_TestCase
         $text = $parent->__toString();
         $this->assertContains("<img ",$text,"Image tag is missing.");
         $this->assertContains("<div ",$text,"div tag is missing.");
-        
+
     }
 }
 ?>
