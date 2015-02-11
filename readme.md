@@ -1,15 +1,9 @@
-# HTMLTags
+# HTMLTags #
 Easy to use class for creating HTML tags in an OOP way.
 
 ### Instalation ###
-Option 1, using the CLI type:
 
-```
-composer require gercoli/htmltags
-```
-
-Option 2, edit your composer.json file and insert the requirement like so:
-
+Include this into your composer.json file:
 ```javascript
 {
     "require": {
@@ -20,10 +14,12 @@ Option 2, edit your composer.json file and insert the requirement like so:
 
 ### Using the class ###
 
-First, I'm going to assume that you have a USE statement at the top of your application, if this is NOT true, just add the fully qualified namespace before each instance of HTMLTag();
+First, I'm going to assume that you have a USE statement at the top of your application,
+if this is NOT true, just add the fully qualified namespace **GErcoli\HTMLTags\HTMLTag**
+before each instance of HTMLTag();
 
 ```PHP
-// Make a parent (or outter) HTML tag.
+// Make a parent (or outer) HTML tag.
 // NOTE: we use false as the 2nd param here, which means that this tag
 // DOES NOT have a closing tag, however, as soon as we add inner content
 // to the tag, the class is smart enough to know that we will now need a </div>
@@ -38,11 +34,18 @@ $child->setAttribute("id","picture1");
 
 // Add the child INSIDE of the parent:
 $parent->appendContent($child);
-// NOTE1: At this point, the class now added the content inside of the parent tag, and knows that a closing tag is needed.
-// NOTE2: you can add multiple pieces of content inside of a tag, or tags inside of tags inside of tags, etc..
 
-// Simply echoing a HTMLTag will evaluate all of its properties as well as all properties of it's inner content
-// If a tag (or tags) exist inside of the parent tag, those tags are also evaluated when "_toString()" is executed.
+// NOTE1:   At this point, the child is now inserted inside of the parent tag, and since the parent
+//          tag now has content inside of it, it also knows that it will need a closing tag.
+//          Using appendContent() automatically sets "closure" (closing tag) to true.
+
+// NOTE2:   As of right now, the appendContent() method accepts strings and other HTMLTag objects.
+//          You can nest as many tags inside as you want, tags inside of tags inside of more tags
+//          etc.
+
+// Just using echo on the HTMLTag will force it to evaluate all of it's properties and present it
+// as normal HTML. This is done on the spot and is not pre-compiled, meaning if you change a child
+// object at any time, the changes will immediately be reflected when you use echo next.
 echo $parent;
 
 // Resulting output:
