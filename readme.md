@@ -37,7 +37,7 @@ $parent->appendContent($child);
 
 //NOTE1:    At this point, the child is now inserted inside of the parent tag, and since the 
 //          parent tag now has content inside of it, it also knows that it will need a closing
-//          tag. ***Using appendContent() automatically sets "closure" (closing tag) to true.***
+//          tag. Using appendContent() automatically sets "closure" (closing tag) to true.
 
 // NOTE2:   As of right now, the appendContent() method accepts strings and other HTMLTag
 //          objects. You can nest as many tags inside as you want, tags inside of tags
