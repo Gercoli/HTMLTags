@@ -1,0 +1,22 @@
+{
+  "name": "gercoli/htmltags",
+  "description": "Easy to use class for creating HTML tags in an OOP way.",
+  "require": {
+    "php": ">5.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
+  "authors": [
+    {
+      "name": "Garry Ercoli",
+      "email": "Garry@GErcoli.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "GErcoli\\HTMLTags\\": "src"
+    }
+  },
+  "minimum-stability": "stable"
+}
