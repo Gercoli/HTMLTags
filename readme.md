@@ -53,3 +53,4 @@ echo $parent;
 - Better documentation
 - Implement the ability to properly indent inner-tags
 - Implement setting for HTML/XHTML versions, this would effect closing (or self-closing) tag formats.
+- Implement the ability to parse a style attribute, we don't want duplicate styles.
