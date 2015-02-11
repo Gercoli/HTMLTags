@@ -68,7 +68,27 @@ class HTMLTagTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($parent->getContent()[0] instanceof HTMLTag);
 
         // child text should be the first element inside.
-        $this->assertTrue($child->getContent()[0] === $child_text);
+        $this->assertTrue($child->getContent()[0] === $child_text, "Child text should be the first element in the child.");
+    }
+
+    function testRender()
+    {
+        $parent = new HTMLTag("div",false);
+        $parent->addClass("container");
+        $parent->setAttribute("id","parentID");
+
+        // Make an child (or inner) HTML tag.
+        $child  = new HTMLTag("img",false);
+        $child->addClass("modal");
+        $child->setAttribute("id","picture1");
+
+        // Add the child INSIDE of the parent:
+        $parent->appendContent($child);
+
+        $text = $parent->__toString();
+        $this->assertContains("<img ",$text,"Image tag is missing.");
+        $this->assertContains("<div ",$text,"div tag is missing.");
+        
     }
 }
 ?>
