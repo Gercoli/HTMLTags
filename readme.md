@@ -35,17 +35,17 @@ $child->setAttribute("id","picture1");
 // Add the child INSIDE of the parent:
 $parent->appendContent($child);
 
-// NOTE1:   At this point, the child is now inserted inside of the parent tag, and since the parent
-//          tag now has content inside of it, it also knows that it will need a closing tag.
-//          Using appendContent() automatically sets "closure" (closing tag) to true.
+//NOTE1:    At this point, the child is now inserted inside of the parent tag, and since the 
+//          parent tag now has content inside of it, it also knows that it will need a closing
+//          tag. ***Using appendContent() automatically sets "closure" (closing tag) to true.***
 
-// NOTE2:   As of right now, the appendContent() method accepts strings and other HTMLTag objects.
-//          You can nest as many tags inside as you want, tags inside of tags inside of more tags
-//          etc.
+// NOTE2:   As of right now, the appendContent() method accepts strings and other HTMLTag
+//          objects. You can nest as many tags inside as you want, tags inside of tags
+//          inside of more tags etc.
 
-// Just using echo on the HTMLTag will force it to evaluate all of it's properties and present it
-// as normal HTML. This is done on the spot and is not pre-compiled, meaning if you change a child
-// object at any time, the changes will immediately be reflected when you use echo next.
+// Just using echo on the HTMLTag will force it to evaluate all of it's properties and present
+// it as normal HTML. This is done on the spot and is not pre-compiled, meaning if you change a
+// child object at any time, the changes will immediately be reflected when you use echo next.
 echo $parent;
 
 // Resulting output:
