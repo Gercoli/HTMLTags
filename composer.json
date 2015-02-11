@@ -1,8 +1,9 @@
 {
   "name": "gercoli/htmltags",
   "description": "Easy to use class for creating HTML tags in an OOP way.",
+  "license": "MIT",
   "require": {
-    "php": ">5.4"
+    "php": ">=5.4.0"
   },
   "require-dev": {
     "phpunit/phpunit": "*"
