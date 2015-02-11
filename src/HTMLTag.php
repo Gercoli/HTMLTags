@@ -238,7 +238,7 @@ class HTMLTag {
         }
         return ((isset($string)) ? $string : "");
     }
-    
+
     /**
      * Turns the object (and it's children) into a nice pretty lump of HTML
      * @return string
