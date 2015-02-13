@@ -34,6 +34,18 @@ class HTMLTag {
     protected $attributes   = [];
 
     /**
+     * The string to prepend to the output of the tags
+     * @var string
+     */
+    protected $tag_prefix   = "\t";
+
+    /**
+     * Same as $tag_prefix but holds it's previous value
+     * @var string
+     */
+    protected $tag_prefix_previous;
+
+    /**
      * Create an instance of an HTMLTag given the element/tag type
      * @param   string  $tagType
      * @param   bool    $requiresClosure
@@ -42,6 +54,7 @@ class HTMLTag {
     {
         $this->type($tagType);
         $this->closure  = ($requiresClosure === true) ? true :  false;
+        $this->tag_prefix_previous = $this->tag_prefix;
     }
 
     /**
@@ -239,13 +252,30 @@ class HTMLTag {
         return ((isset($string)) ? $string : "");
     }
 
+    public function tagPrefix($prefix = null)
+    {
+        if(!is_string($prefix))
+        {
+            return $this->tag_prefix;
+        }
+
+        $this->tag_prefix_previous = $this->tag_prefix;
+        $this->tag_prefix = $prefix;
+        return $this;
+    }
+
+    public function tagPrefixPrevious()
+    {
+        return $this->tag_prefix_previous;
+    }
+
     /**
      * Turns the object (and it's children) into a nice pretty lump of HTML
      * @return string
      */
     public function __toString()
     {
-        $html = sprintf("<%s%s>", $this->type(), $this->getFormattedAttributes());
+        $html = sprintf("%s<%s%s>", $this->tagPrefix(),$this->type(), $this->getFormattedAttributes());
         if($this->closure())
         {
             $innerHTML = "";
@@ -253,14 +283,17 @@ class HTMLTag {
             {
                 if($element instanceof self)
                 {
-                    $innerHTML .= $element->__toString();
+                    $old_prefix = $element->tagPrefix();
+                    $element->tagPrefix( $this->tagPrefix() . $old_prefix );
+                    $innerHTML .= "\n" . $element->__toString();
+                    $element->tagPrefix($old_prefix);
                 }
                 elseif(is_string($element))
                 {
-                    $innerHTML .= htmlentities($element);
+                    $innerHTML .= "\n" . $this->tagPrefix() . $this->tagPrefixPrevious() . htmlentities($element);
                 }
             }
-            $html .= sprintf("%s</%s>",$innerHTML,$this->type());
+            $html .= sprintf("%s\n%s</%s>",$innerHTML,$this->tagPrefix(),$this->type());
         }
         return $html;
     }

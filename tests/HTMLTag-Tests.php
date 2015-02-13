@@ -82,10 +82,15 @@ class HTMLTagTest extends PHPUnit_Framework_TestCase
         $child->addClass("modal");
         $child->setAttribute("id","picture1");
 
+        $grand_child = new HTMLTag("a",true);
+        $grand_child->appendContent("This is some test text, nothing to see here!");
+        $child->appendContent($grand_child);
+
         // Add the child INSIDE of the parent:
         $parent->appendContent($child);
 
         $text = $parent->__toString();
+
         $this->assertContains("<img ",$text,"Image tag is missing.");
         $this->assertContains("<div ",$text,"div tag is missing.");
 
