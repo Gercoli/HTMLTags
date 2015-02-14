@@ -49,7 +49,9 @@ $parent->appendContent($child);
 echo $parent;
 
 // Resulting output:
-// <div class="container" id="parentID"><img class="modal" id="picture1"></div>
+// <div class="container" id="parentID">
+//      <img class="modal" id="picture1">
+// </div>
 ```
 
 ### TO DO ###
