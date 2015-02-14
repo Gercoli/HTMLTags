@@ -26,10 +26,7 @@ class HTMLTagTest extends PHPUnit_Framework_TestCase
         // This tag should have no classes yet, so the addClass()
         // should return true. False is returned if the class already
         // exists
-        $this->assertTrue($htmlTag->addClass(strtolower($className)));
-
-        // Testing if the class (of the same case) has been added:
-        $this->assertTrue($htmlTag->hasClass(strtolower($className)));
+        $this->assertTrue($htmlTag->addClass(strtolower($className))->hasClass($className));
 
         // Testing if the class (of different case) has been added:
         $this->assertTrue($htmlTag->hasClass(strtoupper($className)));

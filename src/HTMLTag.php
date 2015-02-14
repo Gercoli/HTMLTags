@@ -73,22 +73,25 @@ class HTMLTag {
 
     /**
      * Sets the given attribute to the supplied value, overwriting it if it already exists.
-     * @param   String  $attributeName
-     * @param   String  $value
-     * @return  void
+     * @param   String $attributeName
+     * @param   String $value
+     * @return  $this
      */
     public function setAttribute($attributeName, $value)
     {
         $this->attributes[strtolower($attributeName)] = trim($value);
+        return $this;
     }
 
     /**
      * Removes an attribute by its case-insensitive name
      * @param   String  $attributeName
+     * @return  $this
      */
     public function removeAttribute($attributeName)
     {
         unset($this->attributes[strtolower($attributeName)]);
+        return $this;
     }
 
     /**
@@ -144,21 +147,21 @@ class HTMLTag {
     /**
      * Add a class to the tag
      * @param   string  $className
-     * @return  bool
+     * @return  $this
      */
     public function addClass($className)
     {
         if(!$this->hasClass($className))
         {
             $this->setAttribute("class",$this->getClasses() . " " . preg_replace('!\s+!', ' ', trim($className)));
-            return true;
         }
-        return false;
+        return $this;
     }
 
     /**
      * Removes a single class from the list of classes.
      * @param   String  $className
+     * @return  $this
      */
     public function removeClass($className)
     {
@@ -175,12 +178,14 @@ class HTMLTag {
             $this->addClass($class);
         }
 
+        return $this;
+
     }
 
     /**
      * Adds a string or HTMLTag to the contents of this tag - this will auto-enable the closure tag.
      * @param   String|HTMLTag  $content
-     * @return  bool
+     * @return  bool|$this
      * @see     closure()
      */
     public function appendContent($content)
@@ -194,7 +199,7 @@ class HTMLTag {
 
         $this->closure(true);
 
-        return true;
+        return $this;
     }
 
     /**
@@ -212,7 +217,7 @@ class HTMLTag {
     /**
      * Define the tag type, i.e. "a", "meta", "div"
      * @param   null|String $newType
-     * @return  null|void
+     * @return  string|$this
      */
     public function type($newType = null)
     {
@@ -222,12 +227,13 @@ class HTMLTag {
         }
 
         $this->type = strtolower($newType);
+        return $this;
     }
 
     /**
      * Declare if this html tag needs a closing tag or not.
      * @param   null|bool   $closureRequired
-     * @return  bool|void
+     * @return  bool|$this
      */
     public function closure($closureRequired = null)
     {
@@ -237,6 +243,7 @@ class HTMLTag {
         }
 
         $this->closure = $closureRequired;
+        return $this;
     }
 
     /**
@@ -264,7 +271,7 @@ class HTMLTag {
         return $this;
     }
 
-    public function tagPrefixPrevious()
+    private function tagPrefixPrevious()
     {
         return $this->tag_prefix_previous;
     }
