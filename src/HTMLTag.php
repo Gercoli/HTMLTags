@@ -290,7 +290,7 @@ class HTMLTag {
                 }
                 elseif(is_string($element))
                 {
-                    $innerHTML .= "\n" . $this->tagPrefix() . $this->tagPrefixPrevious() . htmlentities($element);
+                    $innerHTML .= "\n" . $this->tagPrefix() . $this->tagPrefixPrevious() . str_replace("\n","\n" . $this->tagPrefix() . $this->tagPrefixPrevious(),htmlentities($element));
                 }
             }
             $html .= sprintf("%s\n%s</%s>",$innerHTML,$this->tagPrefix(),$this->type());
