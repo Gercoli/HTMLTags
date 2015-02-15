@@ -25,12 +25,12 @@ before each instance of HTMLTag();
 // to the tag, the class is smart enough to know that we will now need a </div>
 $parent = new HTMLTag("div",false);
 $parent->addClass("container");
-$parent->setAttribute("id","parentID");
+$parent->attribute("id","parentID");
 
 // Make an child (or inner) HTML tag.
 $child  = new HTMLTag("img",false);
 $child->addClass("modal");
-$child->setAttribute("id","picture1");
+$child->attribute("id","picture1");
 
 // Add the child INSIDE of the parent:
 $parent->appendContent($child);

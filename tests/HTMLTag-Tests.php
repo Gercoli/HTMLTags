@@ -45,12 +45,23 @@ class HTMLTagTest extends PHPUnit_Framework_TestCase
         // Setup the parent element.
         $parent = new HTMLTag("div",false);
         $parent->addClass("container");
-        $parent->setAttribute("id","mommy");
+        $parent->attribute("id","mommy");
+
+        // Test to see if an exception gets thrown.
+        try {
+            $exception_thrown = false;
+            $parent->attribute();
+        }
+        catch(Exception $e)
+        {
+            $exception_thrown = true;
+        }
+        $this->assertTrue($exception_thrown, "Exception was not thrown.");
 
         // Setup the child element.
         $child  = new HTMLTag("span",false);
         $child->addClass("boldthis");
-        $child->setAttribute("id","baby");
+        $child->attribute("id","baby");
         $child->appendContent($child_text = "This text is in the \"child\" element.");
 
         // Insert the child into the parent.
@@ -72,12 +83,12 @@ class HTMLTagTest extends PHPUnit_Framework_TestCase
     {
         $parent = new HTMLTag("div",false);
         $parent->addClass("container");
-        $parent->setAttribute("id","parentID");
+        $parent->attribute("id","parentID");
 
         // Make an child (or inner) HTML tag.
         $child  = new HTMLTag("img",false);
         $child->addClass("modal");
-        $child->setAttribute("id","picture1");
+        $child->attribute("id","picture1");
 
         $grand_child = new HTMLTag("a",true);
         $grand_child->appendContent("This is some test text, nothing to see here!");

@@ -4,9 +4,11 @@
  * A class designed to build an HTML tag (or tree of tags) in an OOP way.
  * @author      Garry Ercoli <Garry@GErcoli.com>
  * @package     GErcoli\HTMLTags
- * @version     v0.2-alpha
+ * @version     v1.0-beta
  * @copyright   Garry Ercoli
  */
+
+
 class HTMLTag {
 
     /**
@@ -58,29 +60,31 @@ class HTMLTag {
     }
 
     /**
-     * Gets the value of an attributeName
-     * @param   String  $attributeName
-     * @return  String|null
+     * Sets or Gets an attribute from the tag.
+     * @param   null|string $attributeName
+     * @param   null|string $value
+     * @return  null|string|$this
+     * @throws  HTMLTagException
      */
-    public function getAttribute($attributeName)
+    public function attribute($attributeName = null,$value = null)
     {
-        if(isset($this->attributes[strtolower($attributeName)]))
+        if($attributeName === null)
         {
-            return $this->attributes[strtolower($attributeName)];
+            throw new HTMLTagException("Attribute name was null");
         }
-        return null;
-    }
 
-    /**
-     * Sets the given attribute to the supplied value, overwriting it if it already exists.
-     * @param   String $attributeName
-     * @param   String $value
-     * @return  $this
-     */
-    public function setAttribute($attributeName, $value)
-    {
-        $this->attributes[strtolower($attributeName)] = trim($value);
+        if($value === null || !is_string($value))
+        {
+            if(isset($this->attributes[strtolower($attributeName)]))
+            {
+                return $this->attributes[strtolower($attributeName)];
+            }
+            return null;
+        }
+
+        $this->attributes[strtolower($attributeName)] = $value;
         return $this;
+
     }
 
     /**
@@ -117,7 +121,7 @@ class HTMLTag {
     {
         if( $this->hasAttribute("class") )
         {
-            foreach(explode(" ", $this->getAttribute("class")) as $class)
+            foreach(explode(" ", $this->attribute("class")) as $class)
             {
                 if(strtolower($class) == strtolower($className))
                 {
@@ -141,7 +145,7 @@ class HTMLTag {
             return null;
         }
 
-        return preg_replace('!\s+!', ' ', trim($this->getAttribute("class")));
+        return preg_replace('!\s+!', ' ', trim($this->attribute("class")));
     }
 
     /**
@@ -153,7 +157,7 @@ class HTMLTag {
     {
         if(!$this->hasClass($className))
         {
-            $this->setAttribute("class",$this->getClasses() . " " . preg_replace('!\s+!', ' ', trim($className)));
+            $this->attribute("class",$this->getClasses() . " " . preg_replace('!\s+!', ' ', trim($className)));
         }
         return $this;
     }
@@ -165,7 +169,7 @@ class HTMLTag {
      */
     public function removeClass($className)
     {
-        $old_classes = explode(" ", $this->getAttribute("class"));
+        $old_classes = explode(" ", $this->attribute("class"));
 
         $this->removeAttribute("class");
 
