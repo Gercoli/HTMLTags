@@ -252,19 +252,57 @@ class HTMLTag implements HTMLTagInterface {
         return (strlen($classes) > 0) ? trim($this->removeMultipleSpaces($classes)) : "";
     }
 
+    /**
+     * Adds content inside of a tag and places it in the last slot,
+     * NOTE: performing this will automatically add a closing tag.
+     * @param   self|string   $content
+     * @return  $this
+     * @throws  HTMLTagException
+     */
     public function appendContent($content)
     {
-        // TODO: Implement appendContent() method.
+        if(!is_string($content) && !($content instanceof self))
+        {
+            throw new HTMLTagException("Only HTMLTags and strings are allowed as content.");
+        }
+
+        $this->tag_content[] = $content;
+
+        $this->setClosingTag(true);
+
+        return $this;
     }
 
+    /**
+     * Adds content inside of a tag and places it in the first slot,
+     * NOTE: performing this will automatically add a closing tag.
+     * @param   self|string $content
+     * @return  $this
+     * @throws  HTMLTagException
+     */
     public function prependContent($content)
     {
-        // TODO: Implement prependContent() method.
+        if(!is_string($content) && !($content instanceof self))
+        {
+            throw new HTMLTagException("Only HTMLTags and strings are allowed as content.");
+        }
+
+        array_unshift($this->tag_content,$content);
+
+        $this->setClosingTag(true);
+
+        return $this;
     }
 
+    /**
+     * Empties the content, go figure.
+     * @return $this
+     */
     public function clearContent()
     {
-        // TODO: Implement clearContent() method.
+        // NOTE: Do research to see if we should use unset() instead.
+        $this->tag_content = [];
+        return $this;
     }
 
     /**

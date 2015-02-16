@@ -50,4 +50,24 @@ class HTMLTagTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($tag_meta->getXHTMLEncoding());   // XHTML
     }
 
+    public function testContent()
+    {
+        $tag = new HTMLTag("div");
+        $tag->appendContent("String 1")->appendContent("String 2")->appendContent("String 3");
+
+        $this->assertTrue($tag->getContent()[0] == "String 1");
+        $this->assertTrue($tag->getContent()[1] == "String 2");
+        $this->assertTrue($tag->getContent()[2] == "String 3");
+
+        $tag->prependContent("String 4");
+        $this->assertTrue($tag->getContent()[0] == "String 4");
+        $this->assertTrue($tag->getContent()[1] == "String 1");
+        $this->assertTrue($tag->getContent()[2] == "String 2");
+        $this->assertTrue($tag->getContent()[3] == "String 3");
+
+        $content = $tag->clearContent()->getContent();
+        $this->assertTrue(count($content) === 0);
+
+    }
+
 }
