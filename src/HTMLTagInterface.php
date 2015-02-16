@@ -34,6 +34,7 @@ interface HTMLTagInterface {
     public function getPreviousTagPrefix();
 
     public function __toString();
+    public function render($indents = 0);
 
 
 }

@@ -70,4 +70,31 @@ class HTMLTagTest extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testRender()
+    {
+
+        echo "\n\n================================\nTest 1 - Plain HTML div tag\n================================\n";
+        $div = (new HTMLTag("div",null,true))->addClass("container")->setAttribute("id","myname");
+        echo $div;
+
+        echo "\n\n================================\nTest 2 - Meta XHTML tag\n================================\n";
+        $meta = (new HTMLTag("meta",null,true))->setAttribute("name","description")->setAttribute("content","some \"description\" about the site");
+        echo $meta;
+
+        echo "\n\n================================\nTest 3 - Span inside anchor inside div with text\n================================\n";
+        $inner = (new HTMLTag("a"))->appendContent("inner link")->setAttribute("href","//github.com/");
+        $outer = (new HTMLTag("div"))->appendContent($inner)->setAttribute("id","container");
+        echo $outer;
+
+        echo "\n\n================================\nTest 4 - Span inside anchor inside div with text\n================================\n";
+        $childA = (new HTMLTag("a"))->appendContent("this is a link")->setAttribute("href","http://www.google.com/");
+
+        $grandchild = (new HTMLTag("span"))->appendContent("link")->addClass("icon");
+        $childB = (new HTMLTag("a"))->appendContent("this is another ")->setAttribute("href","http://www.yahoo.com/")->appendContent($grandchild);
+
+        $parent = (new HTMLTag("div"))->appendContent($childA)->appendContent($childB);
+        echo $parent;
+
+    }
+
 }

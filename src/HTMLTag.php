@@ -170,7 +170,7 @@ class HTMLTag implements HTMLTagInterface {
         if(!$this->hasClass($className))
         {
             $classes = $this->getClasses() . " " . $this->removeMultipleSpaces(trim($className));
-            $this->setAttribute("class",$classes);
+            $this->setAttribute("class",trim($classes));
         }
 
         return $this;
@@ -416,14 +416,77 @@ class HTMLTag implements HTMLTagInterface {
         return $this->tag_prefix;
     }
 
+    /**
+     * The last known tag prefix.
+     * @return  string
+     */
     public function getPreviousTagPrefix()
     {
-        // TODO: Implement getPreviousTagPrefix() method.
+        return $this->tag_prefix_previous;
     }
 
+    /**
+     * Your standard __toString(), it allows recursive rendering so,
+     * sub-tags inside of the content will also be rendered.
+     * @return  string
+     */
     public function __toString()
     {
-        return $this->getTagType();
+        return $this->render();
+    }
+
+    public function render($indents = 0)
+    {
+        $self_closing = ($this->getXHTMLEncoding() && !$this->getClosingTag()) ? ' /' : '';
+        $rtn = sprintf(
+            "%s<%s%s%s>",
+            str_repeat($this->getTagPrefix(),$indents),
+            $this->getTagType(),
+            $this->getFormattedAttributes(),
+            $self_closing
+        );
+
+        for($i = 0; $i < ($t = count($this->getContent())); $i++)
+        {
+            $content = $this->getContent()[$i];
+
+            if(is_string($content))
+            {
+
+
+                $prefix = ($t > 1) ? "\n" . str_repeat($this->getTagPrefix(),$indents + 1) : '' ;
+                $rtn .= $prefix . htmlentities($content);
+            }
+            elseif ($content instanceof self)
+            {
+                $content->setTagPrefix($this->getTagPrefix());
+                //$rtn .= (($t > 1) ? "\n" : '') . $content->render($indents + 1);
+                $rtn .= "\n" . $content->render($indents + 1);
+                $content->setTagPrefix($content->getPreviousTagPrefix());
+                if($i == 0 && $t == 1)
+                {
+                    $rtn .= "\n";
+                }
+            }
+            else
+            {
+                throw new HTMLTagException("Encountered a non-string and non-HTMLTag.");
+            }
+
+        }
+
+        if($this->getClosingTag())
+        {
+            $rtn .= sprintf(
+                "%s</%s>",
+                ($t > 1) ? "\n" . str_repeat($this->getTagPrefix(),$indents) : '',
+                $this->getTagType()
+            );
+        }
+
+        return $rtn;
+
+
     }
 
     function __construct($tag_type, $closing_tag = null, $XHTML_encoding = false)
@@ -447,6 +510,7 @@ class HTMLTag implements HTMLTagInterface {
         $this->tag_prefix_previous = $this->tag_prefix;
         $this->tag_attributes = [];
         $this->tag_content = [];
+        $this->tag_type = $tag_type;
 
         $this->setClosingTag($closing_tag);
         $this->setXHTMLEncoding($XHTML_encoding);
