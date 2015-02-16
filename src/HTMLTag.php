@@ -387,14 +387,33 @@ class HTMLTag implements HTMLTagInterface {
         return $rtn;
     }
 
+    /**
+     * Sets the string that should precede a tag
+     * @param   string|null $prefix
+     * @return  $this
+     * @throws  HTMLTagException
+     */
     public function setTagPrefix($prefix)
     {
-        // TODO: Implement setTagPrefix() method.
+        if(!is_string($prefix) && $prefix !== null)
+        {
+            throw new HTMLTagException("The tag prefix must be a string or null.");
+        }
+
+        $this->tag_prefix_previous = $this->getTagPrefix();
+        $this->tag_prefix = $prefix;
+
+        return $this;
+
     }
 
+    /**
+     * The string that should prefix a tag.
+     * @return string
+     */
     public function getTagPrefix()
     {
-        // TODO: Implement getTagPrefix() method.
+        return $this->tag_prefix;
     }
 
     public function getPreviousTagPrefix()
