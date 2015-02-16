@@ -3,105 +3,32 @@ use GErcoli\HTMLTags\HTMLTag;
 
 class HTMLTagTest extends PHPUnit_Framework_TestCase
 {
-
-    function testInstantiation()
+    public function testClasses()
     {
-        $tag_type = "meta";     // What type of tag is this?
-        $tag_closure = true;    // Does this tag need a closing tag?
+        $tag_div = new HTMLTag("div");
 
-        // Create the object:
-        $htmlTag = new HTMLTag($tag_type, $tag_closure);
+        // Add Classes A,B,C and remove B (only A & C should remain)
+        $tag_div
+            ->addClass("classA")
+            ->addClass("classB")
+            ->addClass("classC")
+            ->removeClass("CLASSB");
 
-        // Check to see if the object was created correctly:
-        $this->assertTrue($htmlTag instanceof HTMLTag);
-        $this->assertTrue($htmlTag->type() == $tag_type);
-        $this->assertTrue($htmlTag->closure() == $tag_closure);
+        // Test getClasses()
+        $this->assertContains("classA",$tag_div->getClasses());     // Has "classA"
+        $this->assertContains("classC",$tag_div->getClasses());     // Has "classC"
+        $this->assertNotContains("classB",$tag_div->getClasses());  // Doesn't Have "classB"
+
+        // Test hasClass()
+        $this->assertTrue($tag_div->hasClass("CLASSA"));    // Has "classA" (case-insensitive)
+        $this->assertTrue($tag_div->hasClass("CLASSC"));    // Has "classC"
+        $this->assertFalse($tag_div->hasClass("CLASSB"));   // Doesn't have "classB"
+
+        $tag_div->clearClasses()->addClass("classD");
+        $this->assertFalse($tag_div->hasClass("CLASSA"));   // This has been removed.
+        $this->assertFalse($tag_div->hasClass("CLASSB"));   // This has been removed.
+        $this->assertFalse($tag_div->hasClass("CLASSC"));   // This has been removed.
+        $this->assertTrue($tag_div->hasClass("CLASSD"));    // This should be there.
     }
 
-    function testAddRemoveClassName()
-    {
-        $htmlTag = new HTMLTag("img",false);
-        $className = "testName";
-
-        // This tag should have no classes yet, so the addClass()
-        // should return true. False is returned if the class already
-        // exists
-        $this->assertTrue($htmlTag->addClass(strtolower($className))->hasClass($className));
-
-        // Testing if the class (of different case) has been added:
-        $this->assertTrue($htmlTag->hasClass(strtoupper($className)));
-
-        // Testing if true is returned for a class that shouldn't exist:
-        $this->assertFalse($htmlTag->hasClass(strtolower($className . "fsdfsa")));
-
-        // Remove the className and make sure it has been removed.
-        $htmlTag->removeClass($className);
-        $this->assertFalse($htmlTag->hasClass($className));
-
-    }
-
-    function testNestedTags()
-    {
-        // Setup the parent element.
-        $parent = new HTMLTag("div",false);
-        $parent->addClass("container");
-        $parent->attribute("id","mommy");
-
-        // Test to see if an exception gets thrown.
-        try {
-            $exception_thrown = false;
-            $parent->attribute();
-        }
-        catch(Exception $e)
-        {
-            $exception_thrown = true;
-        }
-        $this->assertTrue($exception_thrown, "Exception was not thrown.");
-
-        // Setup the child element.
-        $child  = new HTMLTag("span",false);
-        $child->addClass("boldthis");
-        $child->attribute("id","baby");
-        $child->appendContent($child_text = "This text is in the \"child\" element.");
-
-        // Insert the child into the parent.
-        $parent->appendContent($child);
-
-        // Make the text in the parent the 2nd element.
-        $parent->appendContent($parent_text = "This text is in the \"parent\" element.");
-
-        // parent text should be the second element
-        $this->assertTrue($parent->getContent()[1] === $parent_text);
-        // The inserted child should be the 2nd element inside of the parent.
-        $this->assertTrue($parent->getContent()[0] instanceof HTMLTag);
-
-        // child text should be the first element inside.
-        $this->assertTrue($child->getContent()[0] === $child_text, "Child text should be the first element in the child.");
-    }
-
-    function testRender()
-    {
-        $parent = new HTMLTag("div",false);
-        $parent->addClass("container");
-        $parent->attribute("id","parentID");
-
-        // Make an child (or inner) HTML tag.
-        $child  = new HTMLTag("img",false);
-        $child->addClass("modal");
-        $child->attribute("id","picture1");
-
-        $grand_child = new HTMLTag("a",true);
-        $grand_child->appendContent("This is some test text, nothing to see here!");
-        $child->appendContent($grand_child);
-
-        // Add the child INSIDE of the parent:
-        $parent->appendContent($child);
-
-        $text = $parent->__toString();
-
-        $this->assertContains("<img ",$text,"Image tag is missing.");
-        $this->assertContains("<div ",$text,"div tag is missing.");
-
-    }
 }
-?>
