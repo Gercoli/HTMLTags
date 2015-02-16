@@ -1,61 +1,72 @@
 # HTMLTags #
 Easy to use class for creating HTML tags in an OOP way.
 
-### Instalation ###
+## Instalation ##
 
 Include this into your composer.json file:
 ```javascript
 {
     "require": {
-        "gercoli/htmltags": "*"
+        "gercoli/htmltags": "dev-master"
     }
 }
 ```
 
-### Using the class ###
+## Using the class ##
+The HTMLTags class uses fully qualified name spaces, so for easier use, add ```use GErcoli\HTMLTags\HTMLTag``` into your php file. Secondly, the class was designed to be easy to use by allowing the chaining of setter methods.
 
-First, I'm going to assume that you have a USE statement at the top of your application,
-if this is NOT true, just add the fully qualified namespace **GErcoli\HTMLTags\HTMLTag**
-before each instance of HTMLTag();
-
+### Example of a simple tag ###
 ```PHP
-// Make a parent (or outer) HTML tag.
-// NOTE: we use false as the 2nd param here, which means that this tag
-// DOES NOT have a closing tag, however, as soon as we add inner content
-// to the tag, the class is smart enough to know that we will now need a </div>
-$parent = new HTMLTag("div",false);
-$parent->addClass("container");
-$parent->attribute("id","parentID");
-
-// Make an child (or inner) HTML tag.
-$child  = new HTMLTag("img",false);
-$child->addClass("modal");
-$child->attribute("id","picture1");
-
-// Add the child INSIDE of the parent:
-$parent->appendContent($child);
-
-//NOTE1:    At this point, the child is now inserted inside of the parent tag, and since the 
-//          parent tag now has content inside of it, it also knows that it will need a closing
-//          tag. Using appendContent() automatically sets "closure" (closing tag) to true.
-
-// NOTE2:   As of right now, the appendContent() method accepts strings and other HTMLTag
-//          objects. You can nest as many tags inside as you want, tags inside of tags
-//          inside of more tags etc.
-
-// Just using echo on the HTMLTag will force it to evaluate all of it's properties and present
-// it as normal HTML. This is done on the spot and is not pre-compiled, meaning if you change a
-// child object at any time, the changes will immediately be reflected when you use echo next.
-echo $parent;
-
-// Resulting output:
-// <div class="container" id="parentID">
-//      <img class="modal" id="picture1">
-// </div>
+    // Create an instance.
+    $tag_div = new HTMLTag("div");
+    
+    // Add Classes A,B,C and remove B (only A & C should remain)
+    $tag_div
+        ->addClass("classA")
+        ->addClass("classB")
+        ->addClass("classC")
+        ->removeClass("CLASSB")
+        ->setAttribute("id","contrainer")
+        ->appendContent("This is text inside of the div!");
+    
+    // Lets convert this tag to a formatted string!
+    echo $tag_div
+    
+    // The string should read:
+    // <div class="classA classC" id="contrainer">This is text inside of the div!</div>
 ```
 
-### TO DO ###
-- Better documentation
-- Implement the ability to properly indent inner-tags
-- Implement setting for HTML/XHTML versions, this would effect closing (or self-closing) tag formats.
+### Nesting HTML tags ###
+```PHP
+    // Create a meta description tag.
+    $tag_description = (new HTMLTag("meta"))
+        ->setAttribute("name","description")
+        ->setAttribute("content","this is a \"description\" tag.");
+
+    // Create a title tag.
+    $tag_title = (new HTMLTag("title"))
+        ->appendContent("This is a page title");
+
+    // Create a head tag and insert the two other tags INSIDE it.
+    $tag_head = (new HTMLTag("head"))
+        ->appendContent($tag_title)
+        ->appendContent($tag_description);
+
+    // Check the markup:
+    echo $tag_head;
+    
+    /*
+     * OUTPUT:
+     *  <head>
+	 *      <title>This is a page title</title>
+	 *      <meta name="description" content="this is a &quot;description&quot; tag.">
+     *  </head>
+     *
+     * Notice that using echo will convert the tag and all sub-tags (or children) to strings,
+     * automatically escape invalid characters (such as quotes), and indent the tags.
+     */
+```
+
+## TO DO ##
+- Better documentation (working on it)
 - Implement the ability to parse a style attribute, we don't want duplicate styles.
