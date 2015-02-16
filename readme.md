@@ -67,6 +67,20 @@ The HTMLTags class uses fully qualified name spaces, so for easier use, add ```u
      */
 ```
 
+### Notes on end tags ###
+By default, when you add content to a tag via ```->appendContent()``` or
+```->prependContent()``` a closing tag will automatically be enabled, however, using
+```->setClosingTag(false)``` will disable a closing tag, and according to the
+[HTML5 spec](http://www.w3.org/html/wg/drafts/html/master/syntax.html#normal-elements), this
+is perfectly valid (which is why I have not added a check for this), so be aware of this fact.
+
+### HTML tags with XHTML children ###
+When you echo out a parent tag that has children, the format of the parent tag does not
+currently cascade down to it's children, and this is by design. There are tags out there,
+specifically social networks that don't always properly validate non-XHTML tags, and as such
+when you set a tag to being XHTML, it will remain that way until YOU change it. THIS WILL
+change in the future, but to keep validators happy, I will leave self-closing tags alone.
+
 ## TO DO ##
 - Better documentation (working on it)
 - Implement the ability to parse a style attribute, we don't want duplicate styles.
