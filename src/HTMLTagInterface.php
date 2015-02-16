@@ -7,6 +7,7 @@ interface HTMLTagInterface {
     public function getAttribute($name);
     public function removeAttribute($name);
     public function hasAttribute($name);
+    public function listAttributes();
 
     public function addClass($className);
     public function removeClass($className);

@@ -31,4 +31,23 @@ class HTMLTagTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($tag_div->hasClass("CLASSD"));    // This should be there.
     }
 
+    public function testEncoding()
+    {
+        // By default, the class SHOULD know if a tag needs a closing tag,
+        // based on the tag type. These settings can be overwritten.
+        $tag_div    = new HTMLTag("div",null,false);    // closing tag.
+        $fake_tag   = new HTMLTag("div",false,false);   // no closing tag.
+        $tag_meta   = new HTMLTag("meta",null,true);    // no closing tag.
+
+        // Closing tags
+        $this->assertTrue($tag_div->getClosingTag());       // yes, closing tag.
+        $this->assertFalse($tag_meta->getClosingTag());     // no, closing tag.
+        $this->assertFalse($fake_tag->getClosingTag());     // no, closing tag.
+
+        // Self-closing tags (XHTML):
+        $this->assertFalse($tag_div->getXHTMLEncoding());   // HTML
+        $this->assertFalse($fake_tag->getXHTMLEncoding());  // HTML
+        $this->assertTrue($tag_meta->getXHTMLEncoding());   // XHTML
+    }
+
 }

@@ -143,6 +143,18 @@ class HTMLTag implements HTMLTagInterface {
     }
 
     /**
+     * @return array|string[]
+     */
+    public function listAttributes()
+    {
+        if(!is_array($this->tag_attributes))
+        {
+            $this->tag_attributes = [];
+        }
+        return $this->tag_attributes;
+    }
+
+    /**
      * Add a class name to the class attribute, this won't add duplicates.
      * @param   string  $className
      * @return  $this
@@ -164,12 +176,23 @@ class HTMLTag implements HTMLTagInterface {
         return $this;
     }
 
+    /**
+     * Removes all classes.
+     * @return  $this
+     * @throws  HTMLTagException
+     */
     public function clearClasses()
     {
         $this->removeAttribute("class");
         return $this;
     }
 
+    /**
+     * Removes the specified class name.
+     * @param   string  $className
+     * @return  $this
+     * @throws  HTMLTagException
+     */
     public function removeClass($className)
     {
         if(strlen($className) < 1)
@@ -244,34 +267,86 @@ class HTMLTag implements HTMLTagInterface {
         // TODO: Implement clearContent() method.
     }
 
+    /**
+     * Returns an array of inner content.
+     * @return array|HTMLTag[]|\string[]
+     */
     public function getContent()
     {
-        // TODO: Implement getContent() method.
+        if(!is_array($this->tag_content))
+        {
+            $this->tag_content = [];
+        }
+        return $this->tag_content;
     }
 
+    /**
+     * Defines if this tag needs a closing tag or not,
+     * NOTE this should be FALSE for self-closing tags.
+     * @param   bool    $enable
+     * @return  $this
+     * @throws  HTMLTagException
+     */
     public function setClosingTag($enable)
     {
-        // TODO: Implement setClosingTag() method.
+        if(!is_bool($enable))
+        {
+            throw new HTMLTagException("Only a boolean value is allowed.");
+        }
+
+        $this->closing_tag = $enable;
+        return $this;
     }
 
+    /**
+     * Does this tag require a closing tag?
+     * @return bool
+     */
     public function getClosingTag()
     {
-        // TODO: Implement getClosingTag() method.
+        return $this->closing_tag;
     }
 
+    /**
+     * This will determine if the tag (and it's children) will need
+     * don't need closing tags will have self-closing tags, as XHTML does.
+     * @param   bool $enable
+     * @return  $this
+     * @throws  HTMLTagException
+     */
     public function setXHTMLEncoding($enable)
     {
-        // TODO: Implement setXHTMLEncoding() method.
+        if(!is_bool($enable))
+        {
+            throw new HTMLTagException("Only a boolean value is allowed.");
+        }
+
+        $this->self_closing_tag = $enable;
+        return $this;
     }
 
+    /**
+     * Does this tag need a self-closing tag?
+     * @return bool
+     */
     public function getXHTMLEncoding()
     {
-        // TODO: Implement getXHTMLEncoding() method.
+        return $this->self_closing_tag;
     }
 
+    /**
+     * Format and return attributes in a name="value" format as
+     * it should appear in an HTML tag.
+     * @return  string
+     */
     public function getFormattedAttributes()
     {
-        // TODO: Implement getFormattedAttributes() method.
+        $rtn = "";
+        foreach($this->listAttributes() as $name => $value)
+        {
+            $rtn .= sprintf(" %s=\"%s\"",htmlentities($name),htmlentities($value));
+        }
+        return $rtn;
     }
 
     public function setTagPrefix($prefix)
