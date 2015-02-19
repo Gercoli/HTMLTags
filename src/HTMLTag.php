@@ -4,7 +4,7 @@
  * A class designed to build an HTML tag (or tree of tags) in an OOP way.
  * @author      Garry Ercoli <Garry@GErcoli.com>
  * @package     GErcoli\HTMLTags
- * @version     v1.0-beta
+ * @version     v1.0.1
  * @copyright   Garry Ercoli
  */
 
@@ -71,7 +71,7 @@ class HTMLTag implements HTMLTagInterface {
      * a value of NULL will list the attribute with no ="value" after
      * @param   string  $name
      * @param   string|null $value
-     * @return  $this
+     * @return  HTMLTag
      * @throws  HTMLTagException
      */
     public function setAttribute($name, $value)
@@ -111,7 +111,7 @@ class HTMLTag implements HTMLTagInterface {
     /**
      * Removes the attribute from the tag, along with its value.
      * @param   string  $name
-     * @return  $this
+     * @return  HTMLTag
      * @throws  HTMLTagException
      */
     public function removeAttribute($name)
@@ -157,7 +157,7 @@ class HTMLTag implements HTMLTagInterface {
     /**
      * Add a class name to the class attribute, this won't add duplicates.
      * @param   string  $className
-     * @return  $this
+     * @return  HTMLTag
      * @throws  HTMLTagException
      */
     public function addClass($className)
@@ -178,7 +178,7 @@ class HTMLTag implements HTMLTagInterface {
 
     /**
      * Removes all classes.
-     * @return  $this
+     * @return  HTMLTag
      * @throws  HTMLTagException
      */
     public function clearClasses()
@@ -190,7 +190,7 @@ class HTMLTag implements HTMLTagInterface {
     /**
      * Removes the specified class name.
      * @param   string  $className
-     * @return  $this
+     * @return  HTMLTag
      * @throws  HTMLTagException
      */
     public function removeClass($className)
@@ -256,7 +256,7 @@ class HTMLTag implements HTMLTagInterface {
      * Adds content inside of a tag and places it in the last slot,
      * NOTE: performing this will automatically add a closing tag.
      * @param   self|string   $content
-     * @return  $this
+     * @return  HTMLTag
      * @throws  HTMLTagException
      */
     public function appendContent($content)
@@ -277,7 +277,7 @@ class HTMLTag implements HTMLTagInterface {
      * Adds content inside of a tag and places it in the first slot,
      * NOTE: performing this will automatically add a closing tag.
      * @param   self|string $content
-     * @return  $this
+     * @return  HTMLTag
      * @throws  HTMLTagException
      */
     public function prependContent($content)
@@ -296,7 +296,7 @@ class HTMLTag implements HTMLTagInterface {
 
     /**
      * Empties the content, go figure.
-     * @return $this
+     * @return HTMLTag
      */
     public function clearContent()
     {
@@ -322,7 +322,7 @@ class HTMLTag implements HTMLTagInterface {
      * Defines if this tag needs a closing tag or not,
      * NOTE this should be FALSE for self-closing tags.
      * @param   bool    $enable
-     * @return  $this
+     * @return  HTMLTag
      * @throws  HTMLTagException
      */
     public function setClosingTag($enable)
@@ -349,7 +349,7 @@ class HTMLTag implements HTMLTagInterface {
      * This will determine if the tag (and it's children) will need
      * don't need closing tags will have self-closing tags, as XHTML does.
      * @param   bool $enable
-     * @return  $this
+     * @return  HTMLTag
      * @throws  HTMLTagException
      */
     public function setXHTMLEncoding($enable)
@@ -390,7 +390,7 @@ class HTMLTag implements HTMLTagInterface {
     /**
      * Sets the string that should precede a tag
      * @param   string|null $prefix
-     * @return  $this
+     * @return  HTMLTag
      * @throws  HTMLTagException
      */
     public function setTagPrefix($prefix)
